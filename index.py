@@ -1,32 +1,33 @@
 from selenium import webdriver
 from selenium.webdriver.common.by import By
-import sys, time
+import time, json
+
+with open('searchConfig.json') as search_config_file:
+  search_config = json.load(search_config_file)
+
 
 driver = webdriver.Chrome()
-url = "https://selenium.dev"
-
-if len(sys.argv) > 1:
-  url = sys.argv[1]
+url = search_config["targetServiceUrl"]
 
 driver.get(url)
 
-acceptBtn = driver.find_element(By.ID, "onetrust-accept-btn-handler")
+acceptBtn = driver.find_element(By.ID, search_config["acceptCookiesBtnId"])
 acceptBtn.click()
 
-transactionsDropDown = driver.find_element(By.CSS_SELECTOR, sys.argv[2])
+transactionsDropDown = driver.find_element(By.CSS_SELECTOR, search_config["transactionTypeDropDownCssSelector"])
 transactionsDropDown.click()
 
-optionZero = driver.find_element(By.ID, sys.argv[3])
+optionZero = driver.find_element(By.ID, search_config["transactionTypeOprionZeroId"])
 optionZero.click()
 
-locationBtn = driver.find_element(By.ID, sys.argv[4])
+locationBtn = driver.find_element(By.ID, search_config["locationBtnId"])
 locationBtn.click()
 driver.implicitly_wait(2)
-locationPicker = driver.find_element(By.ID, sys.argv[5])
+locationPicker = driver.find_element(By.ID, search_config["locationPickerId"])
 locationPicker.click()
-locationPicker.send_keys(sys.argv[6])
+locationPicker.send_keys(search_config["cityName"])
 driver.implicitly_wait(5)
-searchedLocationInput = driver.find_element(By.ID, sys.argv[7])
+searchedLocationInput = driver.find_element(By.ID, search_config["dynamicallyMountedCityCheckboxId"])
 searchedLocationLiElement = searchedLocationInput.find_element(By.XPATH, "./..")
 searchedLocationLiElement.click()
 
@@ -34,7 +35,7 @@ searchedLocationLiElement.click()
 # which then updates the search button text, which in turn embeds the prior
 # network req's response data
 time.sleep(5)
-searchBtn = driver.find_element(By.ID, sys.argv[8])
+searchBtn = driver.find_element(By.ID, search_config["searchFormSubmitBtnId"])
 
 print('searchBtn.text', searchBtn.text)
 
