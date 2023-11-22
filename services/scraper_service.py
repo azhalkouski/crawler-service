@@ -9,13 +9,14 @@ class ScraperService:
         self.serviceConfig = openServiceConfig()
 
 
-    def scrape_appartments_count_for_city(self, city_id, city_name):
+    def scrape_appartments_count_for_city(self, city_name):
         count = 0
 
         driver = webdriver.Chrome()
         url = self.serviceConfig["targetServiceUrl"]
         driver.get(url)
 
+        driver.implicitly_wait(5)
         acceptBtn = driver.find_element(By.ID, self.serviceConfig["acceptCookiesBtnId"])
         acceptBtn.click()
 
@@ -37,16 +38,20 @@ class ScraperService:
         locationPicker.send_keys(city_name)
         driver.implicitly_wait(5)
 
+
         searchedLocationInput = driver.find_element(
-            By.ID, self.serviceConfig["dynamicallyMountedCityCheckboxId"])
-        searchedLocationLiElement = searchedLocationInput.find_element(
-            By.XPATH, "./..")
-        searchedLocationLiElement.click()
+            By.ID, self.serviceConfig["dynamicallyMountedCityCheckboxIds"][city_name])
+        driver.implicitly_wait(5)
+        lishka = searchedLocationInput.find_element(By.XPATH, "./..")
+        label = lishka.find_element(By.XPATH, f"//label[@for='{self.serviceConfig['dynamicallyMountedCityCheckboxIds'][city_name]}']")
+        label.click()
+
 
         # Wait for 5 seconds because searchedLocationLiElement.click() initiates
         # a network request which then updates the search button text,
         # which in turn embeds the prior network request's response data
-        time.sleep(5)
+        # TODO: get rid of this wait. 5 sec is way too long
+        time.sleep(3)
 
         searchBtn = driver.find_element(
             By.ID, self.serviceConfig["searchFormSubmitBtnId"])
