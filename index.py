@@ -1,38 +1,39 @@
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 import time
-import json
+from utils.index import openServiceConfig
 
-with open('searchConfig.json') as search_config_file:
-    search_config = json.load(search_config_file)
+
+serviceConfig = openServiceConfig()
+
 
 driver = webdriver.Chrome()
-url = search_config["targetServiceUrl"]
+url = serviceConfig["targetServiceUrl"]
 driver.get(url)
 
-acceptBtn = driver.find_element(By.ID, search_config["acceptCookiesBtnId"])
+acceptBtn = driver.find_element(By.ID, serviceConfig["acceptCookiesBtnId"])
 acceptBtn.click()
 
 transactionsDropDown = driver.find_element(
-    By.CSS_SELECTOR, search_config["transactionTypeDropDownCssSelector"])
+    By.CSS_SELECTOR, serviceConfig["transactionTypeDropDownCssSelector"])
 transactionsDropDown.click()
 
 optionZero = driver.find_element(
-    By.ID, search_config["transactionTypeOprionZeroId"])
+    By.ID, serviceConfig["transactionTypeOprionZeroId"])
 optionZero.click()
 
-locationBtn = driver.find_element(By.ID, search_config["locationBtnId"])
+locationBtn = driver.find_element(By.ID, serviceConfig["locationBtnId"])
 locationBtn.click()
 driver.implicitly_wait(2)
 
 locationPicker = driver.find_element(
-    By.ID, search_config["locationPickerId"])
+    By.ID, serviceConfig["locationPickerId"])
 locationPicker.click()
-locationPicker.send_keys(search_config["cityName"])
+locationPicker.send_keys(serviceConfig["cityName"])
 driver.implicitly_wait(5)
 
 searchedLocationInput = driver.find_element(
-    By.ID, search_config["dynamicallyMountedCityCheckboxId"])
+    By.ID, serviceConfig["dynamicallyMountedCityCheckboxId"])
 searchedLocationLiElement = searchedLocationInput.find_element(
     By.XPATH, "./..")
 searchedLocationLiElement.click()
@@ -43,7 +44,7 @@ searchedLocationLiElement.click()
 time.sleep(5)
 
 searchBtn = driver.find_element(
-    By.ID, search_config["searchFormSubmitBtnId"])
+    By.ID, serviceConfig["searchFormSubmitBtnId"])
 print('searchBtn.text', searchBtn.text)
 
 time.sleep(5)
