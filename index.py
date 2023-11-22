@@ -1,10 +1,11 @@
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 import time
-from utils.index import openServiceConfig
+from utils.index import openServiceConfig, extract_numeric_word
 
 
 serviceConfig = openServiceConfig()
+
 
 def scrape_appartments_count_for_city(city_id=0, city_name=serviceConfig["cityName"]):
     count = 0
@@ -47,9 +48,9 @@ def scrape_appartments_count_for_city(city_id=0, city_name=serviceConfig["cityNa
 
     searchBtn = driver.find_element(
         By.ID, serviceConfig["searchFormSubmitBtnId"])
-    print('searchBtn.text', searchBtn.text)
 
-    # TODO: extract_numeric_word(string_with_numeric_word)
+    count = extract_numeric_word(searchBtn.text) \
+      if extract_numeric_word(searchBtn.text) is not None else 0
 
     driver.quit()
 
@@ -57,4 +58,4 @@ def scrape_appartments_count_for_city(city_id=0, city_name=serviceConfig["cityNa
 
 
 if __name__ == '__main__':
-    scrape_appartments_count_for_city()
+    print(scrape_appartments_count_for_city())
