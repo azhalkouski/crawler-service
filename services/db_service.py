@@ -59,7 +59,7 @@ class DataBaseService:
             cursor = conn.cursor()
 
             cursor.execute(f"""
-                           INSERT INTO units_count_history 
+                           INSERT INTO total_counts_per_city 
                            (city_id, unit_type, total_count) 
                            VALUES ({city_id}, '{unit_type}', {count});
                            """)
