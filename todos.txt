@@ -11,3 +11,14 @@ TODO #2
 
 1. try multithreaded appraoch: each city in a separate thread
 2. then try multiple servers approach. Each server is responsible of its own city. Each server has its unique IP address
+
+TODO #3
+target: ScraperService.scrape_appartments_count_for_city()
+break smth so that it breaks the whole process
+and then wrap with try except and try to save the whole process from crashing
+and log the failed city and add it to the leftovers_list
+iterate over the leftovers and run scrape_appartments_count_for_city()
+
+TODO #4
+1) log exceptions to a local file
+2) log exceptions to a some remote storage
