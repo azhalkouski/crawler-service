@@ -10,3 +10,4 @@ cities = dataBaseService.get_all_cities()
 for city in cities:
     count = scraperService.scrape_appartments_count_for_city(city[1])
     print(city[0], city[1], count)
+    dataBaseService.save_units_count(city[0], 'apartment', count)
