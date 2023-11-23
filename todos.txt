@@ -22,3 +22,7 @@ iterate over the leftovers and run scrape_appartments_count_for_city()
 TODO #4
 1) log exceptions to a local file
 2) log exceptions to a some remote storage
+
+TODO #5
+Refactoring in DataBaseService
+DRY
