@@ -1,4 +1,4 @@
-TODO #3
+TODO #3 - DONE
 target: ScraperService.scrape_appartments_count_for_city()
 break smth so that it breaks the whole process
 and then wrap with try except and try to save the whole process from crashing
