@@ -1,0 +1,13 @@
+TODO #1
+
+CI/CD Integration:
+
+If possible, integrate your database schema changes into your Continuous 
+Integration / Continuous Deployment (CI/CD) pipeline. This ensures that your 
+database changes are automatically applied when deploying your application.
+
+
+TODO #2
+
+1. try multithreaded appraoch: each city in a separate thread
+2. then try multiple servers approach. Each server is responsible of its own city. Each server has its unique IP address
