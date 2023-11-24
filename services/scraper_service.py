@@ -1,15 +1,20 @@
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 import time
+import logging
 from utils.index import openServiceConfig, extract_numeric_word
+from services.db_service import DataBaseService
 
 
 class ScraperService:
     def __init__(self):
         self.serviceConfig = openServiceConfig()
+        self.dataBaseService = DataBaseService()
+
+        # self.logger = logging.getLogger(__name__)
 
 
-    def scrape_appartments_count_for_city(self, city_name):
+    def __scrape_appartments_count_for_city(self, city_name):
         count = 0
 
         driver = webdriver.Chrome()
@@ -62,3 +67,38 @@ class ScraperService:
         driver.quit()
 
         return count
+
+
+    def process_cities(self, cities):
+        logging.info('Scraping process is running.')
+        BREAKPOINT_COUNT = len(cities) + 5
+        iteration_count = 0
+
+        while len(cities) > 0:
+            iteration_count += 1
+            city = cities.pop(0)
+            city_id, city_name = city
+
+            try:
+                count_of_units = self\
+                  .__scrape_appartments_count_for_city(city_name)
+            except Exception as e:
+                cities.append(city)
+
+                error_log = f"Failed to scrape for {city_name} with an error: {e}"
+                print(error_log)
+                logging.error(error_log)
+            
+                if iteration_count > BREAKPOINT_COUNT:
+                    critical_log = (f"BREAKING THE CYCLE because of constantly "
+                          f"failing to scrape for {cities} with an error: {e}")
+                    print(critical_log)
+                    logging.critical(critical_log)
+
+                    break
+            else:
+                print(city_id, city_name, count_of_units)
+                self.dataBaseService.save_units_count(city[0], 'apartment',
+                                                count_of_units)
+        else:
+            logging.info('Scraping process completed successfully.')
