@@ -4,8 +4,7 @@ import time
 import logging
 from utils.index import openServiceConfig, extract_numeric_word
 from services.db_service import DataBaseService
-
-log_format = '%(levelname)s:%(name)s:%(asctime)s:%(message)s'
+from services.logger_factory import LoggerFactory
 
 
 class ScraperService:
@@ -13,25 +12,11 @@ class ScraperService:
         self.serviceConfig = openServiceConfig()
         self.dataBaseService = DataBaseService()
 
-        # TODO: self.info_logger, self.error_logger, self.critical_logger = LoggerFactory(__name__)
+        loggerFactory = LoggerFactory(__name__)
 
-        formatter = logging.Formatter(log_format)
-
-        self.info_logger = logging.getLogger(__name__ + '.info')
-        self.error_logger = logging.getLogger(__name__ + '.error')
-        self.critical_logger = logging.getLogger(__name__ + '.critical')
-
-        error_logger_handler = logging.FileHandler(
-            filename='error_level_logs.log', encoding='utf-8')
-        error_logger_handler.setFormatter(formatter)
-        critical_logger_handler = logging.FileHandler(
-            filename='critical_level_logs.log', encoding='utf-8')
-        critical_logger_handler.setFormatter(formatter)
-        self.error_logger.addHandler(error_logger_handler)
-        self.critical_logger.addHandler(critical_logger_handler)
-        
-        self.error_logger.setLevel(logging.ERROR)
-        self.critical_logger.setLevel(logging.CRITICAL)
+        self.info_logger = loggerFactory.info_logger
+        self.error_logger = loggerFactory.error_logger
+        self.critical_logger = loggerFactory.critical_logger
 
 
     def __scrape_apartments_count_for_city(self, city_name):
