@@ -6,15 +6,28 @@ and log the failed city and add it to the leftovers_list
 iterate over the leftovers and run scrape_appartments_count_for_city()
 
 
-TODO #4
+TODO #4 DONE
 1) log exceptions to a local file
-2) log exceptions to a some remote storage
+2) log exceptions to a some remote storage (maby later)
 
 
 TODO #5
 Refactoring in DataBaseService
 DRY
 
+TODO #5
+Implement DataProcessor
+Apply DataProcessor in the middle of ScraperService and DataBaseService
+It's not ScraperService's responsibility to persist the scraped data. Its 
+responsibility is to do the scraping.
+
+TODO #7
+python linter on precommit hook
+PEP 8
+
+
+TODO #9
+Tests. Unittests with pytest
 
 
 TODO #2
@@ -22,9 +35,6 @@ TODO #2
 1. try multithreaded appraoch: each city in a separate thread
 2. then try multiple servers approach. Each server is responsible of its own city. Each server has its unique IP address
 
-TODO #7
-python linter on precommit hook
-PEP 8
 
 TODO #8
 Run the app as a web server. The server runs locally. All error/exceptions
