@@ -57,3 +57,14 @@ If possible, integrate your database schema changes into your Continuous
 Integration / Continuous Deployment (CI/CD) pipeline. This ensures that your 
 database changes are automatically applied when deploying your application.
 
+
+
+CRITICAL LEFTOVERS:
+- testing and test coverage
+- CI/CD pipline
+- deploy and launch
+- minimal website:
+    - LOGIN/LOGOUT
+    - AUTH and premissions management
+    - more SQL selects/joins/views
+    - visual representation of scraped data
