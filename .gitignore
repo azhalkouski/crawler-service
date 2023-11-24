@@ -1,3 +1,4 @@
 env
 searchConfig.json
+invalid_searchConfig.json
 __pycache__/
