@@ -14,7 +14,7 @@ class ScraperService:
         # self.logger = logging.getLogger(__name__)
 
 
-    def __scrape_appartments_count_for_city(self, city_name):
+    def __scrape_apartments_count_for_city(self, city_name):
         count = 0
 
         driver = webdriver.Chrome()
@@ -81,7 +81,7 @@ class ScraperService:
 
             try:
                 count_of_units = self\
-                  .__scrape_appartments_count_for_city(city_name)
+                  .__scrape_apartments_count_for_city(city_name)
             except Exception as e:
                 cities.append(city)
 
