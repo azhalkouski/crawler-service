@@ -13,9 +13,6 @@ def process_cities(cities):
 
         try:
             count_of_units = scraperService.scrape_appartments_count_for_city(city_name)
-            print(city_id, city_name, count_of_units)
-            dataBaseService.save_units_count(city[0], 'apartment', count_of_units)
-
         except Exception as e:
             cities.append(city)
             print(f"Failed to scrape for {city_name} with an error: {e}")
@@ -24,6 +21,9 @@ def process_cities(cities):
                 print(f"BREAKING THE CYCLE because of constantly failing to "
                       f"scrape for {cities} with an error: {e}")
                 break
+        else:
+            print(city_id, city_name, count_of_units)
+            dataBaseService.save_units_count(city[0], 'apartment', count_of_units)
 
 
 if __name__ == '__main__':
