@@ -1,13 +1,14 @@
 import logging
 from services.scraper_service import ScraperService
 from services.db_service import DataBaseService
-from services.logger_factory import LOG_FORMAT
+from services.logger_factory import LoggerFactory
 
 
 if __name__ == '__main__':
-    logging.basicConfig(filename='info_level_logs.log', encoding='utf-8',
-                        level=logging.INFO, format=LOG_FORMAT)
-    logging.info('Scraping process is being started.')
+    loggerFactory = LoggerFactory('root')
+    info_logger = loggerFactory.info_logger
+
+    info_logger.info('Scraping process is being started.')
 
     dataBaseService = DataBaseService()
     scraperService = ScraperService()

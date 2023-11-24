@@ -12,13 +12,20 @@ class LoggerFactory:
         error_logger = logging.getLogger(base_name + '.error')
         critical_logger = logging.getLogger(base_name + '.critical')
 
+        info_logger_handler = logging.FileHandler(
+            filename='logs/info_level_logs.log', encoding='utf-8')
+        info_logger_handler.setFormatter(formatter)
+
         error_logger_handler = logging.FileHandler(
-            filename='error_level_logs.log', encoding='utf-8')
+            filename='logs/error_level_logs.log', encoding='utf-8')
         error_logger_handler.setFormatter(formatter)
 
         critical_logger_handler = logging.FileHandler(
-            filename='critical_level_logs.log', encoding='utf-8')
+            filename='logs/critical_level_logs.log', encoding='utf-8')
         critical_logger_handler.setFormatter(formatter)
+
+        info_logger.addHandler(info_logger_handler)
+        info_logger.setLevel(logging.INFO)
 
         error_logger.addHandler(error_logger_handler)
         error_logger.setLevel(logging.ERROR)
