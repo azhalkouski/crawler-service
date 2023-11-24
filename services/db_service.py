@@ -1,6 +1,7 @@
 import psycopg2
 from typing import Optional
 from utils.index import openServiceConfig
+from services.logger_factory import LoggerFactory
 
 
 class DataBaseService:
@@ -9,6 +10,12 @@ class DataBaseService:
         self.db_name = serviceConfig["db_name"]
         self.user_name = serviceConfig["service_user"]
         self.user_pass = serviceConfig["password"]
+
+        loggerFactory = LoggerFactory(__name__)
+
+        self.info_logger = loggerFactory.info_logger
+        self.error_logger = loggerFactory.error_logger
+        self.critical_logger = loggerFactory.critical_logger
 
 
     def get_all_cities(self):
@@ -29,15 +36,14 @@ class DataBaseService:
 
         except psycopg2.OperationalError as oper_err:
             print('psycopg2::operational error: \n', oper_err)
-            # TODO: log err to file
+            self.error_logger.error('psycopg2::operational error: \n', oper_err)
 
         except psycopg2.ProgrammingError as prog_err:
             print('psycopg2::programming error occured: \n', prog_err)
-            # TODO: log err to file
 
         except Exception as e:
             print('Something happened at db interaction level: \n', e)
-            # TODO: log err to file
+            self.critical_logger.critical('Something happened at db interaction level: \n', e)
 
         finally:
             if conn is not None:
@@ -68,15 +74,14 @@ class DataBaseService:
             cursor.close()
         except psycopg2.OperationalError as oper_err:
             print('psycopg2::operational error: \n', oper_err)
-            # TODO: log err to file
+            self.error_logger.error('psycopg2::operational error: \n', oper_err)
 
         except psycopg2.ProgrammingError as prog_err:
             print('psycopg2::programming error occured: \n', prog_err)
-            # TODO: log err to file
 
         except Exception as e:
             print(f'something occured {e}')
-            # TODO: log to file
+            self.critical_logger.critical(f'Something occured {e}')
 
         finally:
             conn.close()
