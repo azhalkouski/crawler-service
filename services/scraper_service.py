@@ -5,13 +5,33 @@ import logging
 from utils.index import openServiceConfig, extract_numeric_word
 from services.db_service import DataBaseService
 
+log_format = '%(levelname)s:%(name)s:%(asctime)s:%(message)s'
+
 
 class ScraperService:
     def __init__(self):
         self.serviceConfig = openServiceConfig()
         self.dataBaseService = DataBaseService()
 
-        # self.logger = logging.getLogger(__name__)
+        # TODO: self.info_logger, self.error_logger, self.critical_logger = LoggerFactory(__name__)
+
+        formatter = logging.Formatter(log_format)
+
+        self.info_logger = logging.getLogger(__name__ + '.info')
+        self.error_logger = logging.getLogger(__name__ + '.error')
+        self.critical_logger = logging.getLogger(__name__ + '.critical')
+
+        error_logger_handler = logging.FileHandler(
+            filename='error_level_logs.log', encoding='utf-8')
+        error_logger_handler.setFormatter(formatter)
+        critical_logger_handler = logging.FileHandler(
+            filename='critical_level_logs.log', encoding='utf-8')
+        critical_logger_handler.setFormatter(formatter)
+        self.error_logger.addHandler(error_logger_handler)
+        self.critical_logger.addHandler(critical_logger_handler)
+        
+        self.error_logger.setLevel(logging.ERROR)
+        self.critical_logger.setLevel(logging.CRITICAL)
 
 
     def __scrape_apartments_count_for_city(self, city_name):
@@ -70,7 +90,7 @@ class ScraperService:
 
 
     def process_cities(self, cities):
-        logging.info('Scraping process is running.')
+        self.info_logger.info('Scraping process is running.')
         BREAKPOINT_COUNT = len(cities) + 5
         iteration_count = 0
 
@@ -87,13 +107,13 @@ class ScraperService:
 
                 error_log = f"Failed to scrape for {city_name} with an error: {e}"
                 print(error_log)
-                logging.error(error_log)
+                self.error_logger.error(error_log)
             
                 if iteration_count > BREAKPOINT_COUNT:
                     critical_log = (f"BREAKING THE CYCLE because of constantly "
                           f"failing to scrape for {cities} with an error: {e}")
                     print(critical_log)
-                    logging.critical(critical_log)
+                    self.critical_logger.critical(critical_log)
 
                     break
             else:
@@ -101,4 +121,4 @@ class ScraperService:
                 self.dataBaseService.save_units_count(city[0], 'apartment',
                                                 count_of_units)
         else:
-            logging.info('Scraping process completed successfully.')
+            self.info_logger.info('Scraping process completed successfully.')
