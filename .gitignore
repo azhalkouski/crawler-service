@@ -2,3 +2,4 @@ env
 searchConfig.json
 invalid_searchConfig.json
 __pycache__/
+info_level_logs.log
