@@ -75,6 +75,9 @@ class ScraperService:
 
 
     def process_cities(self, cities):
+        if len(cities) == 0:
+            return None
+
         self.info_logger.info('Scraping process is running.')
         BREAKPOINT_COUNT = len(cities) + 5
         iteration_count = 0
