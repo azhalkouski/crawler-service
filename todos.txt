@@ -21,7 +21,7 @@ Apply DataProcessor in the middle of ScraperService and DataBaseService
 It's not ScraperService's responsibility to persist the scraped data. Its
 responsibility is to do the scraping and return the results.
 
-TODO #7
+TODO #7 DONE
 python linter on precommit hook
 PEP 8
 
