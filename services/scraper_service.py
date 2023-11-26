@@ -1,16 +1,15 @@
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 import time
-import logging
 from utils.index import openServiceConfig, extract_numeric_word
-from services.db_service import DataBaseService
 from services.logger_factory import LoggerFactory
+from services.scraped_data_processor import ScrapedDataProcessor
 
 
 class ScraperService:
     def __init__(self):
         self.serviceConfig = openServiceConfig()
-        self.dataBaseService = DataBaseService()
+        self.scrapedDataProcessor = ScrapedDataProcessor()
 
         loggerFactory = LoggerFactory(__name__)
 
@@ -106,7 +105,7 @@ class ScraperService:
                     break
             else:
                 print(city_id, city_name, count_of_units)
-                self.dataBaseService.save_units_count(city[0], 'apartment',
-                                                count_of_units)
+                self.scrapedDataProcessor.process_aggregates_by_city(
+                    city[0], 'apartment', count_of_units)
         else:
             self.info_logger.info('Scraping process completed successfully.')

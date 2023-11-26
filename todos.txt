@@ -8,18 +8,18 @@ iterate over the leftovers and run scrape_appartments_count_for_city()
 
 TODO #4 DONE
 1) log exceptions to a local file
-2) log exceptions to a some remote storage (maby later)
+2) log exceptions to a some remote storage (maybe later)
 
 
-TODO #5
+TODO #5 DONE
 Refactoring in DataBaseService
 DRY
 
 TODO #5
-Implement DataProcessor
+Implement DataProcessor DONE
 Apply DataProcessor in the middle of ScraperService and DataBaseService
 It's not ScraperService's responsibility to persist the scraped data. Its 
-responsibility is to do the scraping.
+responsibility is to do the scraping and return the results.
 
 TODO #7
 python linter on precommit hook
