@@ -18,7 +18,7 @@ DRY
 TODO #5
 Implement DataProcessor DONE
 Apply DataProcessor in the middle of ScraperService and DataBaseService
-It's not ScraperService's responsibility to persist the scraped data. Its 
+It's not ScraperService's responsibility to persist the scraped data. Its
 responsibility is to do the scraping and return the results.
 
 TODO #7
@@ -53,8 +53,8 @@ TODO #1
 
 CI/CD Integration:
 
-If possible, integrate your database schema changes into your Continuous 
-Integration / Continuous Deployment (CI/CD) pipeline. This ensures that your 
+If possible, integrate your database schema changes into your Continuous
+Integration / Continuous Deployment (CI/CD) pipeline. This ensures that your
 database changes are automatically applied when deploying your application.
 
 
