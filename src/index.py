@@ -1,14 +1,12 @@
-import logging
-from services.scraper_service import ScraperService
 from services.db_service import DataBaseService
 from services.logger_factory import LoggerFactory
+from services.scraper_service import ScraperService
 
-
-if __name__ == '__main__':
-    loggerFactory = LoggerFactory('root')
+if __name__ == "__main__":
+    loggerFactory = LoggerFactory("root")
     info_logger = loggerFactory.info_logger
 
-    info_logger.info('Scraping process is being started.')
+    info_logger.info("Scraping process is being started.")
 
     dataBaseService = DataBaseService()
     scraperService = ScraperService()

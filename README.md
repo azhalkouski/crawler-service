@@ -15,7 +15,7 @@
   enforcing PEP 8 style conventions.
 
   **black:** Black is an opinionated code formatter that automatically
-  reformats code to comply with its style guide. WHile it doesnt'
+  reformats code to comply with its style guide. While it doesn't
   enforce PEP 8 exactly, it often produces code that aligns with
   PEP 8 standards.
 
@@ -23,6 +23,6 @@
   isort is a handy tool.
 
   Here's a common workflow using these tools:
-    - Run **`flake8`** to catch errors and enforce PEP 8 style conventions.
-    - Run **`black`** to automatically format code in a consistent style.
-    - Run **`isort`** to organize sort imports.
+  1. Run **`flake8`** to catch errors and enforce PEP 8 style conventions.
+  2. Run **`black src/`** to automatically format code in a consistent style.
+  3. Run **`isort src/`** to organize sort imports.

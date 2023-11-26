@@ -1,0 +1,4 @@
+[tool.isort]
+# profile = "black" ensures that isort follows the import style defined by black.
+profile = "black"
+line_length = 88
