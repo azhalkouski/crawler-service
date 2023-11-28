@@ -15,8 +15,8 @@ TODO #5 DONE
 Refactoring in DataBaseService
 DRY
 
-TODO #5
-Implement DataProcessor DONE
+TODO #5 DONE
+Implement DataProcessor
 Apply DataProcessor in the middle of ScraperService and DataBaseService
 It's not ScraperService's responsibility to persist the scraped data. Its
 responsibility is to do the scraping and return the results.
