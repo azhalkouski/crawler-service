@@ -5,6 +5,9 @@
   2. activate the virtual environment: source env/bin/activate
   3. install the dependencies: python3 -m pip install -r requirements.txt
 
+# run test along with coverage
+  -  coverage run -m pytest tests/ && coverage report -m && coverage html && coverage json --pretty-print
+
 # update requirements.txt command
   - pip freeze > requirements.txt
 
