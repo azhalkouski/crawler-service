@@ -2,10 +2,10 @@ import time
 
 from selenium import webdriver
 from selenium.webdriver.common.by import By
+from utils.index import extract_numeric_word, openServiceConfig
 
 from services.logger_factory import LoggerFactory
 from services.scraped_data_processor import ScrapedDataProcessor
-from utils.index import extract_numeric_word, openServiceConfig
 
 
 class ScraperService:

@@ -1,0 +1,191 @@
+**User How to setup production ready python web application server?**
+
+Setting up a production-ready Python web application server involves several steps to ensure security, performance, and reliability. Below is a general guide to help you set up a production environment for your Python web application:
+
+1. **Choose a WSGI Server:**
+   - Select a reliable WSGI server to serve your Python web application. Common choices include Gunicorn, uWSGI, and mod_wsgi.
+
+2. **Use a Reverse Proxy:**
+   - Set up a reverse proxy server like Nginx or Apache to handle client requests and forward them to your WSGI server. This improves security and performance.
+
+3. **Create a Virtual Environment:**
+   - Use virtual environments to isolate your Python dependencies. This helps avoid conflicts between different projects and ensures a clean environment for your application.
+
+      ```bash
+      python -m venv venv
+      source venv/bin/activate  # On Windows, use `venv\Scripts\activate`
+      ```
+
+4. **Secure Your Application:**
+   - Set environment variables for sensitive information (e.g., secret keys, database passwords).
+   - Disable debugging in your application's settings for security reasons.
+   - Keep your software and libraries updated to patch security vulnerabilities.
+
+5. **Configure Logging:**
+   - Set up proper logging for your application. Log critical events and errors to help diagnose issues in the production environment.
+
+6. **Database Configuration:**
+   - Use a production-ready database like PostgreSQL, MySQL, or SQLite (for smaller applications). Configure your database connection settings securely.
+
+7. **Static Files and Media:**
+   - Use a separate web server (like Nginx) to serve static files and media. This reduces the load on your WSGI server.
+
+8. **Performance Optimization:**
+   - Enable server-level caching where appropriate.
+   - Use a content delivery network (CDN) for static assets.
+   - Optimize database queries.
+   - Use tools like New Relic or Datadog for performance monitoring.
+
+9. **Set Up HTTPS:**
+   - Use SSL/TLS to encrypt data in transit. Obtain an SSL certificate (e.g., from Let's Encrypt) and configure your web server to use HTTPS.
+
+10. **Automate Deployment:**
+    - Use deployment tools like Fabric, Ansible, or Docker for automating the deployment process. This ensures consistency and reduces the risk of human error.
+
+11. **Monitoring and Error Tracking:**
+    - Implement monitoring tools such as Prometheus or Grafana to track server metrics. Use error tracking tools like Sentry to catch and diagnose application errors.
+
+12. **Backup and Recovery:**
+    - Set up regular backups of your database and any other critical data. Plan for disaster recovery scenarios.
+
+13. **Scaling:**
+    - Plan for scalability. If your application grows, consider load balancing and deploying multiple instances of your application.
+
+14. **Security Auditing:**
+    - Regularly audit your application and server configurations for security vulnerabilities. Perform penetration testing if necessary.
+
+15. **Documentation:**
+    - Document your server setup, configurations, and deployment process. This is crucial for maintaining and scaling your application.
+
+Remember that the specifics may vary based on your application's framework (e.g., Django, Flask) and the hosting environment. Always refer to the documentation of the tools and frameworks you are using for the most up-to-date information.
+
+
+
+
+
+
+
+**How to configure python project's infrastructure? which config files do I need to create, which build tools do I need to use? How do I lock dependencies?**
+
+Configuring a Python project's infrastructure involves creating essential configuration files, using appropriate build tools, and managing dependencies. Here's a guide to help you set up the infrastructure for your Python project:
+
+### 1. **Version Control System (VCS):**
+   - Initialize a version control repository using Git. This is crucial for tracking changes and collaborating with others.
+
+      ```bash
+      git init
+      ```
+
+### 2. **Project Structure:**
+   - Organize your project structure. A common structure might include folders like `src` for source code, `tests` for test cases, and `docs` for documentation.
+
+### 3. **Configuration Files:**
+   - Create essential configuration files:
+
+      - **`setup.py` or `pyproject.toml`:**
+        - Used for project metadata and specifying dependencies. `pyproject.toml` is the modern standard for Python projects.
+
+      - **`requirements.txt` or `requirements.in`:**
+        - Specify project dependencies. You can use `pip-tools` to manage dependencies and generate a `requirements.txt` file from a `requirements.in` file.
+
+      - **`.gitignore`:**
+        - Specify files and directories to be ignored by version control.
+
+      - **`tox.ini` or `.coveragerc`:**
+        - Configuration files for testing (Tox) or code coverage (coverage.py).
+
+### 4. **Build and Package Management:**
+   - Use `setuptools` or `poetry` for building and packaging your project.
+
+      - **`setuptools`:**
+        - Create a `setup.py` file to define metadata, dependencies, and entry points.
+
+          ```python
+          from setuptools import setup, find_packages
+
+          setup(
+              name="your_project",
+              version="0.1",
+              packages=find_packages(),
+              install_requires=[
+                  # Your dependencies here
+              ],
+          )
+          ```
+
+      - **`poetry`:**
+        - Poetry simplifies dependency management and packaging.
+
+          ```bash
+          poetry init
+          ```
+
+### 5. **Virtual Environment:**
+   - Use a virtual environment to isolate project dependencies.
+
+      ```bash
+      python -m venv venv
+      source venv/bin/activate  # On Windows, use `venv\Scripts\activate`
+      ```
+
+### 6. **Dependency Locking:**
+   - Lock your dependencies to ensure reproducibility.
+
+      - **`requirements.txt` with `pip-compile`:**
+        - Use `pip-compile` to generate a locked `requirements.txt` file.
+
+          ```bash
+          pip-compile requirements.in
+          ```
+
+      - **`poetry`:**
+        - Poetry automatically generates a `poetry.lock` file.
+
+          ```bash
+          poetry install
+          ```
+
+### 7. **Code Formatting:**
+   - Use `black` for code formatting. Create a `pyproject.toml` file to configure `black`:
+
+      ```toml
+      [tool.black]
+      line-length = 88
+      ```
+
+### 8. **Testing:**
+   - Use `pytest` for testing. Create a `tox.ini` file for configuration.
+
+      ```ini
+      [tox]
+      envlist = py36, py37, py38
+
+      [testenv]
+      deps = pytest
+      commands = pytest
+      ```
+
+### 9. **Continuous Integration (CI):**
+   - Set up CI using platforms like GitHub Actions, GitLab CI, or Travis CI.
+
+      - Create a configuration file (e.g., `.github/workflows/main.yml` for GitHub Actions).
+
+### 10. **Documentation:**
+    - Use Sphinx for documentation. Create a `docs` directory and configure Sphinx.
+
+### 11. **Environment Variables:**
+    - Use a library like `python-dotenv` to manage environment variables in development.
+
+### 12. **Linting and Static Analysis:**
+    - Use tools like `flake8` and `mypy` for linting and static analysis.
+
+### 13. **Versioning:**
+    - Consider using `bump2version` for version management.
+
+### 14. **Security Scanning:**
+    - Integrate tools like `bandit` for security scanning.
+
+### 15. **IDE Configuration:**
+    - Configure your IDE settings, such as `.editorconfig` for consistent code style.
+
+Remember to refer to the documentation of the tools you choose for detailed configuration options and updates. Additionally, follow best practices for each tool and regularly update dependencies to benefit from security patches and new features.

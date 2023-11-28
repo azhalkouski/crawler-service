@@ -1,5 +1,4 @@
 import psycopg2
-
 from services.logger_factory import LoggerFactory
 
 

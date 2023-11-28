@@ -8,24 +8,6 @@
 # run test along with coverage
   -  coverage run -m pytest tests/ && coverage report -m && coverage html && coverage json --pretty-print
 
-# update requirements.txt command
-  - pip freeze > requirements.txt
-
 # fixing errors and enforcing the PEP 8 code standard
-  **flake8**: Flake8 is a versatile tool that combines multiple linters,
-  including PyFlakes, pycodestyle (formerly know as pep8), and McCabe
-  complexity checker. It's a great choice for catching errors and
-  enforcing PEP 8 style conventions.
-
-  **black:** Black is an opinionated code formatter that automatically
-  reformats code to comply with its style guide. While it doesn't
-  enforce PEP 8 exactly, it often produces code that aligns with
-  PEP 8 standards.
-
-  **isort:** FOr sorting and organizing imports according to PEP 8 guidelines,
-  isort is a handy tool.
-
-  Here's a common workflow using these tools:
-  1. Run **`flake8`** to catch errors and enforce PEP 8 style conventions.
-  2. Run **`black src/`** to automatically format code in a consistent style.
-  3. Run **`isort src/`** to organize sort imports.
+  - ruff check .
+  - ruff check --fix .
