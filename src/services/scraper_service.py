@@ -1,11 +1,15 @@
+import sys
 import time
 
 from selenium import webdriver
+from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.by import By
 from utils.index import extract_numeric_word, openServiceConfig
 
 from services.logger_factory import LoggerFactory
 from services.scraped_data_processor import ScrapedDataProcessor
+
+SELENIUM_HEADLESS = "selenium_headless"
 
 
 class ScraperService:
@@ -21,8 +25,17 @@ class ScraperService:
 
     def __scrape_apartments_count_for_city(self, city_name):
         count = 0
+        options = Options()
 
-        driver = webdriver.Chrome()
+        if len(sys.argv) == 2 and sys.argv[1] == SELENIUM_HEADLESS:
+            options.add_argument("--headless=new")
+            user_agent = (
+                "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 "
+                "(KHTML, like Gecko) Chrome/60.0.3112.50 Safari/537.36"
+            )
+            options.add_argument(f"user-agent={user_agent}")
+
+        driver = webdriver.Chrome(options=options)
         url = self.serviceConfig["targetServiceUrl"]
         driver.get(url)
 
