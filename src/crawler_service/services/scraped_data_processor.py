@@ -1,4 +1,4 @@
-from services.db_service import DataBaseService
+from crawler_service.services.db_service import DataBaseService
 
 
 class ScrapedDataProcessor:

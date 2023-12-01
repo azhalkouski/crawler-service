@@ -1,13 +1,12 @@
 import sys
 import time
 
+from crawler_service.services.logger_factory import LoggerFactory
+from crawler_service.services.scraped_data_processor import ScrapedDataProcessor
+from crawler_service.utils.index import extract_numeric_word, openServiceConfig
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.by import By
-from utils.index import extract_numeric_word, openServiceConfig
-
-from services.logger_factory import LoggerFactory
-from services.scraped_data_processor import ScrapedDataProcessor
 
 SELENIUM_HEADLESS = "selenium_headless"
 
@@ -28,6 +27,7 @@ class ScraperService:
         options = Options()
 
         if len(sys.argv) == 2 and sys.argv[1] == SELENIUM_HEADLESS:
+            self.info_logger.info("Started in HEADLESS MODE")
             options.add_argument("--headless=new")
             user_agent = (
                 "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 "

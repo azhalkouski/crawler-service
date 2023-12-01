@@ -1,5 +1,5 @@
-from context_managers.db_connection import DBConnection
-from utils.index import openServiceConfig
+from crawler_service.context_managers.db_connection import DBConnection
+from crawler_service.utils.index import openServiceConfig
 
 
 class DataBaseService:

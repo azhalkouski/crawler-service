@@ -1,5 +1,5 @@
 import psycopg2
-from services.logger_factory import LoggerFactory
+from crawler_service.services.logger_factory import LoggerFactory
 
 
 class DBConnection:

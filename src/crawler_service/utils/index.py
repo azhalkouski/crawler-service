@@ -6,7 +6,7 @@ def openServiceConfig():
     serviceConfig = None
 
     try:
-        with open("src/crawler_service/searchConfig.json") as search_config_file:
+        with open("searchConfig.json") as search_config_file:
             serviceConfig = json.load(search_config_file)
 
     except Exception as e:

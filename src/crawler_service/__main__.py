@@ -1,9 +1,9 @@
 import time
 from datetime import datetime
 
-from services.db_service import DataBaseService
-from services.logger_factory import LoggerFactory
-from services.scraper_service import ScraperService
+from crawler_service.services.db_service import DataBaseService
+from crawler_service.services.logger_factory import LoggerFactory
+from crawler_service.services.scraper_service import ScraperService
 
 if __name__ == "__main__":
     loggerFactory = LoggerFactory("root")
