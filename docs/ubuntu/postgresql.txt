@@ -1,0 +1,8 @@
+Installing postgresql on Ubuntu
+
+1. Ensure that your package list is up-to-date by running: `sudo apt update`
+2. Use the following command to install PostgreSQL along with the PostgreSQL client and contrib package (which includes additional utilities and functions):
+  `sudo apt install postgresql postgresql-client postgresql-contrib`
+3. `sudo service postgresql start`
+4. check status `sudo systemctl status postgresql`
+5. sudo -u postgres createdb db_name

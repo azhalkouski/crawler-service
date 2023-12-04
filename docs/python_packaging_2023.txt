@@ -1,0 +1,55 @@
+copied and pasted from https://drivendata.co/blog/python-packaging-2023
+
+Other sources:
+  - https://packaging.python.org/en/latest/tutorials/packaging-projects/
+  - https://pip.pypa.io/en/stable/getting-started/
+
+You may have heard there are new, modern standards in Python packaging (pyproject.toml!)
+that have been adopted over the last few years. There are now several popular and
+shiny modern tools for managing your packaging projects. (Poetry! Hatch! PDM!)
+However, the documentation is scattered and much of it is specific to these competing
+tools. What are the recommended best practices when creating a Python package? What is
+the minimal amount that you need to do in order to follow the best practices?
+
+This blog post covers the following topics as they are in early 2023:
+
+A quick how-to guide on what you minimally need to do to adopt the modern packaging
+standards for most cases (with further reading for more complicated cases).
+Explanations of the concepts so that you can make informed decisions about the most
+appropriate tools for you.
+First, some quick definitions: packaging refers to the general activity of creating
+and distributing Python packages, which are bundles of Python code (usually as a
+compressed file archive) in a particular format that can be distributed to other people
+and installed by a tool like pip. The action of turning your Python source code into
+the package thing is often referred to as building the package.
+
+There are many other activities that are not packaging but are related, such as
+virtual environment management and dependency management. Most of this post will not
+be about those topics, but they will turn up later when we discuss popular tools that
+handle packaging and these other things.
+
+WHAT ARE THE STANDARDS?
+The "new standards" refer to a standardized way to specify package metadata (things
+like package name, author, dependencies) in a pyproject.toml file and the way to build
+packages from source code using that metadata. You often see this referred to as
+"pyproject.toml-based builds." If you have created Python packages in the past and
+remember using a setup.py or a setup.cfg file, the new build standards are replacing
+that.
+
+The standards were defined through a series of PEPs—short for Python Enhancement
+Proposals, which are design documents about new standards or features in Python.
+PEPs are referenced using numeric identifiers, and these ones in particular are
+usually what people consider to constitute the pyproject.toml package standards:
+PEP 517, PEP 518, PEP 621, and PEP 660. Two of them—PEP 517 and PEP 621—are most
+relevant to what you as a package author need to do to adopt these modern standards.
+The other ones are mostly relevant to the people making tools for package authors.
+
+HOW DO I USE THESE STANDARDS?
+There are two main things you need to do: (1) declare a build system and (2) declare
+your package metadata. Both of these are sections that must exist in
+the pyproject.toml file.
+
+
+...
+...
+...

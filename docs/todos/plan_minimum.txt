@@ -1,0 +1,52 @@
+minimum wish list:
+
+- call web scraper every hour
+- package into an installable wheel
+- install locally and test
+- choose hosting provider (Digital Ocean won the contest)
+- create a droplet, install postgresql, install my package (2d) - Friday
+- CI/CD (2d) - Sunday
+- run coverage on pre-commit (???) abort commit if at least one test failed (1d)
+
+
+
+DONE
+      1. add pyproject.toml
+      2. install setuptools
+      3. build wheel
+      4. install my package with -e and see who it works
+      5. cp my wheel to the remote machine && install && run
+
+
+ISSUES after the wheel been installed and run:
+    1. data source blocks IP address -> no data has been mined
+POSSIBLE SOLUTION:
+    1. use a forward proxy
+    2. rotate IP if necessary
+
+
+DUE TO DEADLINE:
+    Let's dive into Web Scraping rules:
+        1. https://blog.apify.com/is-web-scraping-legal/
+        2. https://docs.apify.com/academy/web-scraping-for-beginners
+
+    Let's learn some more about proxies:
+        1. https://research.aimultiple.com/proxy-server-types/
+
+    Before byuing proxy, let's try some free options and see who (if) they work:
+        1. try free proxy
+        2. there's some free open source proxy. what does it offer?
+
+    If free proxy hasn't worked, buy some proxy and make it work already:
+        1. choose proxy
+        2. buy proxy
+        3. apply proxy
+
+    An option that might be worth trying out:
+        1. take a web server in Japan
+        2. open an ssh tunnel between my droplet and the server in Japan
+
+    Write minimum but sufficient unit tests:
+        1. cover utils for simple starters
+        2. define critical fragile parts and cover them if possible
+        3. run tests on pre-commit hooks (Until there's no CI/CD pipeline)
