@@ -4,9 +4,9 @@ minimum wish list:
 - package into an installable wheel
 - install locally and test
 - choose hosting provider (Digital Ocean won the contest)
-- create a droplet, install postgresql, install my package (2d) - Friday
-- CI/CD (2d) - Sunday
-- run coverage on pre-commit (???) abort commit if at least one test failed (1d)
+- create a droplet, install postgresql, install my package
+- CI/CD
+- run coverage on pre-commit (???) abort commit if at least one test failed
 
 
 
