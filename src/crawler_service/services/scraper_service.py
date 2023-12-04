@@ -5,7 +5,6 @@ from crawler_service.services.logger_factory import LoggerFactory
 from crawler_service.services.scraped_data_processor import ScrapedDataProcessor
 from crawler_service.utils.index import extract_numeric_word, openServiceConfig
 from selenium import webdriver
-from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.by import By
 
 SELENIUM_HEADLESS = "selenium_headless"
@@ -24,18 +23,21 @@ class ScraperService:
 
     def __scrape_apartments_count_for_city(self, city_name):
         count = 0
-        options = Options()
 
         if len(sys.argv) == 2 and sys.argv[1] == SELENIUM_HEADLESS:
             self.info_logger.info("Started in HEADLESS MODE")
-            options.add_argument("--headless=new")
+            firefoxOptions = webdriver.FirefoxOptions()
+            firefoxOptions.add_argument("-headless")
+            service = webdriver.FirefoxService(
+                executable_path=self.serviceConfig["geckodriver_path"]
+            )
             user_agent = (
                 "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 "
                 "(KHTML, like Gecko) Chrome/60.0.3112.50 Safari/537.36"
             )
-            options.add_argument(f"user-agent={user_agent}")
+            firefoxOptions.add_argument(f"user-agent={user_agent}")
 
-        driver = webdriver.Chrome(options=options)
+        driver = webdriver.Firefox(options=firefoxOptions, service=service)
         url = self.serviceConfig["targetServiceUrl"]
         driver.get(url)
 
