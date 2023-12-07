@@ -1,10 +1,10 @@
 from crawler_service.context_managers.db_connection import DBConnection
-from crawler_service.utils.index import openServiceConfig
+from crawler_service.utils.index import open_service_config
 
 
 class DataBaseService:
     def __init__(self):
-        serviceConfig = openServiceConfig()
+        serviceConfig = open_service_config()
         self.db_name = serviceConfig["db_name"]
         self.user_name = serviceConfig["service_user"]
         self.user_pass = serviceConfig["password"]

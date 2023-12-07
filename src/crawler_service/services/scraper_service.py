@@ -2,14 +2,14 @@ import time
 
 from crawler_service.services.logger_factory import LoggerFactory
 from crawler_service.services.scraped_data_processor import ScrapedDataProcessor
-from crawler_service.utils.index import extract_numeric_word, openServiceConfig
+from crawler_service.utils.index import extract_numeric_word, open_service_config
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 
 
 class ScraperService:
     def __init__(self):
-        self.serviceConfig = openServiceConfig()
+        self.serviceConfig = open_service_config()
         self.scrapedDataProcessor = ScrapedDataProcessor()
 
         loggerFactory = LoggerFactory(__name__)
