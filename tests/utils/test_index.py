@@ -1,6 +1,6 @@
 import json
 
-from crawler_service.utils.index import open_service_config
+from crawler_service.utils.index import extract_numeric_word, open_service_config
 
 
 def test_open_service_config_when_file_exists():
@@ -18,3 +18,15 @@ def test_openServiceConfig_when_file_missing():
     serviceConfig = open_service_config("tests/test_data/missing_config.json")
 
     assert serviceConfig is None
+
+
+def test_extract_numeric_word_when_numeric_value_exists():
+    string = "The price is $100"
+    result = extract_numeric_word(string)
+    assert result == 100
+
+
+def test_extract_numeric_word_when_numeric_value_does_not_exist():
+    string = "No numeric value in this string"
+    result = extract_numeric_word(string)
+    assert result is None
