@@ -1,7 +1,7 @@
 import time
 from datetime import datetime
 
-from crawler_service.services.db_service import DataBaseService
+from crawler_service.services.db_service import DBService
 from crawler_service.services.logger_factory import LoggerFactory
 from crawler_service.services.scraper_service import ScraperService
 
@@ -11,10 +11,10 @@ if __name__ == "__main__":
 
     info_logger.info("Scraping process is being started.")
 
-    dataBaseService = DataBaseService()
+    db_service = DBService()
     scraperService = ScraperService()
 
-    cities = dataBaseService.get_all_cities()
+    cities = db_service.get_all_cities()
 
     while True:
         print(f'processing at {datetime.now().strftime("%Y-%m-%d %H:%M:%S")}')

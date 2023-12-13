@@ -2,7 +2,7 @@ from crawler_service.context_managers.db_connection import DBConnection
 from crawler_service.utils.index import open_service_config
 
 
-class DataBaseService:
+class DBService:
     def __init__(self):
         serviceConfig = open_service_config()
         self.db_name = serviceConfig["db_name"]
