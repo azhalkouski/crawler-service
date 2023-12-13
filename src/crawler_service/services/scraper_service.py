@@ -1,16 +1,28 @@
 import time
+from datetime import datetime
+from typing import TypeVar
 
+from crawler_service.services.abstract_db_service import AbstractDBService
 from crawler_service.services.logger_factory import LoggerFactory
-from crawler_service.services.scraped_data_processor import ScrapedDataProcessor
 from crawler_service.utils.index import extract_numeric_word, open_service_config
+from fake_headers import Headers
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 
+AbstractDBService = TypeVar("AbstractDBService", bound=AbstractDBService)
+
 
 class ScraperService:
-    def __init__(self):
+    def __init__(self, db_service: AbstractDBService):
+        if not isinstance(db_service, AbstractDBService):
+            raise TypeError(
+                f"db_service must be an instance of AbstractDBService, "
+                f"not {type(db_service)}"
+            )
+
+        # Inversion of Control
+        self.db_service = db_service
         self.serviceConfig = open_service_config()
-        self.scrapedDataProcessor = ScrapedDataProcessor()
 
         loggerFactory = LoggerFactory(__name__)
 
@@ -18,19 +30,27 @@ class ScraperService:
         self.error_logger = loggerFactory.error_logger
         self.critical_logger = loggerFactory.critical_logger
 
+        self.cities = db_service.load_all_cities()
+
     def __scrape_apartments_count_for_city(self, city_name):
         count = 0
+
+        headers = Headers(browser="firefox", os="linux", headers=True).generate()
 
         firefoxOptions = webdriver.FirefoxOptions()
         firefoxOptions.add_argument("-headless")
         service = webdriver.FirefoxService(
             executable_path=self.serviceConfig["geckodriver_path"]
         )
-        user_agent = (
-            "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 "
-            "(KHTML, like Gecko) Chrome/60.0.3112.50 Safari/537.36"
-        )
-        firefoxOptions.add_argument(f"user-agent={user_agent}")
+
+        for key, value in headers.items():
+            firefoxOptions.add_argument(f"--header={key}: {value}")
+            firefoxOptions.add_argument(
+                "--header=Accept: ext/html,application/xhtml+xml,"
+                "application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8"
+            )
+            firefoxOptions.add_argument("--header=Accept-Language: en-US,en;q=0.5")
+            firefoxOptions.add_argument("--header=Host: www.otodom.pl")
 
         driver = webdriver.Firefox(options=firefoxOptions, service=service)
         url = self.serviceConfig["targetServiceUrl"]
@@ -92,23 +112,24 @@ class ScraperService:
 
         return count
 
-    def process_cities(self, cities):
-        if len(cities) == 0:
+    def process_cities(self):
+        print(f'processing at {datetime.now().strftime("%Y-%m-%d %H:%M:%S")}')
+        if len(self.cities) == 0:
             return None
 
         self.info_logger.info("Scraping process is running.")
-        BREAKPOINT_COUNT = len(cities) + 5
+        BREAKPOINT_COUNT = len(self.cities) + 5
         iteration_count = 0
 
-        while len(cities) > 0:
+        while len(self.cities) > 0:
             iteration_count += 1
-            city = cities.pop(0)
+            city = self.cities.pop(0)
             city_id, city_name = city
 
             try:
                 count_of_units = self.__scrape_apartments_count_for_city(city_name)
             except Exception as e:
-                cities.append(city)
+                self.cities.append(city)
 
                 error_log = f"Failed to scrape for {city_name} with an error: {e}"
                 print(error_log)
@@ -117,7 +138,7 @@ class ScraperService:
                 if iteration_count > BREAKPOINT_COUNT:
                     critical_log = (
                         f"BREAKING THE CYCLE because of constantly "
-                        f"failing to scrape for {cities} with an error: {e}"
+                        f"failing to scrape for {self.cities} with an error: {e}"
                     )
                     print(critical_log)
                     self.critical_logger.critical(critical_log)
@@ -125,8 +146,6 @@ class ScraperService:
                     break
             else:
                 print(city_id, city_name, count_of_units)
-                self.scrapedDataProcessor.process_aggregates_by_city(
-                    city[0], "apartment", count_of_units
-                )
+                self.db_service.save_units_count(city[0], "apartment", count_of_units)
         else:
             self.info_logger.info("Scraping process completed successfully.")

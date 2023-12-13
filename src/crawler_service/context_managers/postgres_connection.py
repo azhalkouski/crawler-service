@@ -2,7 +2,8 @@ import psycopg2
 from crawler_service.services.logger_factory import LoggerFactory
 
 
-class DBConnection:
+# rename to PostgresConnection
+class PostgresConnection:
     """Context manager for managing connection to the database"""
 
     def __init__(self, db_name, user_name, user_pass):

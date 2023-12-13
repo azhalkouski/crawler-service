@@ -1,8 +1,7 @@
 import time
-from datetime import datetime
 
-from crawler_service.services.db_service import DBService
 from crawler_service.services.logger_factory import LoggerFactory
+from crawler_service.services.postgres_service import PostgresService
 from crawler_service.services.scraper_service import ScraperService
 
 if __name__ == "__main__":
@@ -11,12 +10,10 @@ if __name__ == "__main__":
 
     info_logger.info("Scraping process is being started.")
 
-    db_service = DBService()
-    scraperService = ScraperService()
-
-    cities = db_service.get_all_cities()
+    postgres_service = PostgresService()
+    # Dependency Injection
+    scraperService = ScraperService(postgres_service)
 
     while True:
-        print(f'processing at {datetime.now().strftime("%Y-%m-%d %H:%M:%S")}')
-        scraperService.process_cities(cities)
+        scraperService.process_cities()
         time.sleep(3600)  # 1h

@@ -1,18 +1,22 @@
-from crawler_service.context_managers.db_connection import DBConnection
+from crawler_service.context_managers.postgres_connection import PostgresConnection
+from crawler_service.services.abstract_db_service import AbstractDBService
 from crawler_service.utils.index import open_service_config
 
 
-class DBService:
+class PostgresService(AbstractDBService):
     def __init__(self):
         serviceConfig = open_service_config()
         self.db_name = serviceConfig["db_name"]
         self.user_name = serviceConfig["service_user"]
         self.user_pass = serviceConfig["password"]
 
-    def get_all_cities(self):
+    def load_all_cities(self):
         cities = []
 
-        with DBConnection(self.db_name, self.user_name, self.user_pass) as (_, cur):
+        with PostgresConnection(self.db_name, self.user_name, self.user_pass) as (
+            _,
+            cur,
+        ):
             if cur is None:
                 return []
 
@@ -22,7 +26,10 @@ class DBService:
         return cities
 
     def save_units_count(self, city_id: int, unit_type: str, count: int) -> None:
-        with DBConnection(self.db_name, self.user_name, self.user_pass) as (conn, cur):
+        with PostgresConnection(self.db_name, self.user_name, self.user_pass) as (
+            conn,
+            cur,
+        ):
             if cur is None:
                 return None
 
