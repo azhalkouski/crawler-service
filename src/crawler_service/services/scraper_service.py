@@ -25,14 +25,14 @@ Should: be invoked with city, type_of_deal, type_of_unit passed via arguments
 
 class ScraperService:
     def __init__(self, db_service: AbstractDBServiceT):
+        # Inversion of Control
         if not isinstance(db_service, AbstractDBService):
             raise TypeError(
                 f"db_service must be an instance of AbstractDBService, "
                 f"not {type(db_service)}"
             )
-
-        # Inversion of Control
         self.db_service = db_service
+
         self.serviceConfig = open_service_config()
 
         loggerFactory = LoggerFactory(__name__)
@@ -127,7 +127,7 @@ class ScraperService:
             )
 
         except Exception as e:
-            driver.save_screenshot(f"possible-ip-block-{get_current_time()}.png")
+            driver.save_screenshot(f"screenshot-of-scraping-{get_current_time()}.png")
             self.error_logger.error(
                 f"Failed to scrape for {city_name} with an error: {e}"
             )
