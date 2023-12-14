@@ -1,5 +1,6 @@
 import json
 import re
+from datetime import datetime
 
 from crawler_service.services.logger_factory import LoggerFactory
 
@@ -46,3 +47,7 @@ def extract_numeric_word(str):
               changed. Could not extract numeric value from string {str}"
         )
         return None
+
+
+def get_current_time():
+    return datetime.now().strftime("%Y-%m-%d %H:%M:%S")
