@@ -9,7 +9,8 @@ CREATE TABLE total_counts_per_city (
   city_id INTEGER REFERENCES cities(id),
   unit_type unit_types NOT NULL,
   total_count INTEGER NOT NULL,
-  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  transaction_type transaction_types NOT NULL
 );
 
 
