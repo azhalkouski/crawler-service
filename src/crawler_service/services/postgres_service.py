@@ -25,7 +25,9 @@ class PostgresService(AbstractDBService):
 
         return cities
 
-    def save_units_count(self, city_id: int, unit_type: str, count: int) -> None:
+    def save_units_count(
+        self, city_id: int, unit_type: str, transaction_type: str, count: int
+    ) -> None:
         with PostgresConnection(self.db_name, self.user_name, self.user_pass) as (
             conn,
             cur,
@@ -35,10 +37,10 @@ class PostgresService(AbstractDBService):
 
             cur.execute(
                 f"""
-                          INSERT INTO total_counts_per_city
-                          (city_id, unit_type, total_count)
-                          VALUES ({city_id}, '{unit_type}', {count});
-                          """
+                INSERT INTO total_counts_per_city
+                (city_id, unit_type, transaction_type, total_count)
+                VALUES ({city_id}, '{unit_type}', '{transaction_type}', {count});
+                """
             )
 
             conn.commit()

@@ -25,28 +25,43 @@ POSSIBLE SOLUTION:
     2. rotate IP if necessary
 
 
-DUE TO DEADLINE:
-    Let's dive into Web Scraping rules:
-        1. https://blog.apify.com/is-web-scraping-legal/
-        2. https://docs.apify.com/academy/web-scraping-for-beginners
 
-    Let's learn some more about proxies:
-        1. https://research.aimultiple.com/proxy-server-types/
+Let's dive into Web Scraping rules:
+    1. https://blog.apify.com/is-web-scraping-legal/
+    2. https://docs.apify.com/academy/web-scraping-for-beginners
 
-    Before byuing proxy, let's try some free options and see who (if) they work:
-        1. try free proxy
-        2. there's some free open source proxy. what does it offer?
+Let's learn some more about proxies:
+    1. https://research.aimultiple.com/proxy-server-types/
 
-    If free proxy hasn't worked, buy some proxy and make it work already:
-        1. choose proxy
-        2. buy proxy
-        3. apply proxy
+Before byuing proxy, let's try some free options and see who (if) they work:
+    1. try free proxy
+    2. there's some free open source proxy. what does it offer?
 
-    An option that might be worth trying out:
-        1. take a web server in Japan
-        2. open an ssh tunnel between my droplet and the server in Japan
+If free proxy hasn't worked, buy some proxy and make it work already:
+    1. choose proxy
+    2. buy proxy
+    3. apply proxy
+Proxy hasn't helped
 
-    Write minimum but sufficient unit tests:
-        1. cover utils for simple starters
-        2. define critical fragile parts and cover them if possible
-        3. run tests on pre-commit hooks (Until there's no CI/CD pipeline)
+An option that might be worth trying out:
+    1. take a web server in Japan
+    2. open an ssh tunnel between my droplet and the server in Japan
+
+Write minimum but sufficient unit tests:
+    1. cover utils for simple starters
+    2. define critical fragile parts and cover them if possible
+    3. run tests on pre-commit hooks (Until there's no CI/CD pipeline)
+
+
+ALWAYS run script behind VPN while on localhost
+If IP gets blocked, introduce intervals
+
+SOLID refactoring:
+ - single responsibility principle :: ScraperService :: no direct calls to DBService
+
+ Order of tasks:
+ 1. commit try/except DONE
+ 2. commit single responsibility principle refactoring DONE
+ 3. add support of "for sell" deals DONE
+ 4. add support of "house" and "room" DONE
+ 5. parallel execution

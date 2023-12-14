@@ -42,37 +42,73 @@ class ScrapingManager:
         if len(cities) == 0:
             return None
 
-        BREAKPOINT_COUNT = len(cities) + 5
-        iteration_count = 0
+        for city in cities:
+            self._handle_city(*city)
 
-        while len(cities) > 0:
-            iteration_count += 1
-            city = cities.pop(0)
-            city_id, city_name = city
+    def _handle_city(self, city_id, city_name):
+        """
+        Each city processing is spread across 3 separate Threads
+        """
+        print(f"{city_id}-{city_name}")
 
+        self._process_apartments(city_id, city_name)  # separate Thread
+        self._process_houses(city_id, city_name)  # separate Thread
+        self._process_rooms(city_id, city_name)  # separate Thread
+
+    def _process_apartments(self, city_id, city_name):
+        # TODO: create a Thread
+        self._process_unit(city_id, city_name, "apartment", "sell")
+        self._process_unit(city_id, city_name, "apartment", "rent")
+
+    def _process_houses(self, city_id, city_name):
+        # TODO: create a Thread
+        self._process_unit(city_id, city_name, "house", "sell")
+        self._process_unit(city_id, city_name, "house", "rent")
+
+    def _process_rooms(self, city_id, city_name):
+        # TODO: create a Thread
+        self._process_unit(city_id, city_name, "room", "sell")
+        self._process_unit(city_id, city_name, "room", "rent")
+
+    def _process_unit(self, city_id, city_name, type_of_unit, type_of_deal):
+        """
+        Might not go well with the first attempt.
+        Give 5 attempts.
+        Log critical if all attempts failed
+        """
+        print(f"{city_id}-{city_name}-{type_of_unit}-{type_of_deal}")
+
+        ATTEMPTS_COUNT = 5
+        scraped_and_saved = False
+
+        for _ in range(ATTEMPTS_COUNT):
             try:
-                count_of_units = self.scraper_service.scrape_apartments_count_for_city(
-                    city_name
+                count_of_units = self.scraper_service.scrape(
+                    city_name, type_of_unit, type_of_deal
                 )
             except Exception as e:
-                cities.append(city)
-
                 error_log = f"Failed to scrape for {city_name} with an error: {e}"
                 print(error_log)
                 self.error_logger.error(error_log)
-
-                if iteration_count > BREAKPOINT_COUNT:
-                    critical_log = (
-                        f"BREAKING THE CYCLE because of constantly "
-                        f"failing to scrape for {cities} with an error: {e}"
-                    )
-                    print(critical_log)
-                    self.critical_logger.critical(critical_log)
-
-                    break
             else:
-                print(city_id, city_name, count_of_units)
-                self.db_service.save_units_count(city[0], "apartment", count_of_units)
-        else:
-            print("Scraping process completed successfully.")
-            self.info_logger.info("Scraping process completed successfully.")
+                print(
+                    f"{city_id}-{city_name}-{type_of_unit}-"
+                    f"{type_of_deal}-{count_of_units}"
+                )
+                # save obtained data to DB
+                self.db_service.save_units_count(
+                    city_id, type_of_unit, type_of_deal, count_of_units
+                )
+                scraped_and_saved = True
+                break
+
+        if not scraped_and_saved:
+            critical_log = (
+                f"Scraping is constantly "
+                f"failing for city={city_name}, "
+                f"type_of_unit={type_of_unit}, "
+                f"type_of_deal={type_of_deal}"
+                "check the screenshots for more details"
+            )
+            print(critical_log)
+            self.critical_logger.critical(critical_log)

@@ -27,8 +27,8 @@ class ScraperService:
         self.error_logger = loggerFactory.error_logger
         self.critical_logger = loggerFactory.critical_logger
 
-    # TODO: do_scraping(self, city_name, type_of_deal, type_of_unit)
-    def scrape_apartments_count_for_city(self, city_name):
+    def scrape(self, city_name, type_of_unit, type_of_deal):
+        print(f"ScraperService::{city_name}-{type_of_unit}-{type_of_deal}")
         count = 0
 
         headers = Headers(browser="firefox", os="linux", headers=True).generate()
@@ -59,16 +59,38 @@ class ScraperService:
             )
             acceptBtn.click()
 
-            transactionsDropDown = driver.find_element(
-                By.CSS_SELECTOR,
-                self.serviceConfig["transactionTypeDropDownCssSelector"],
-            )
-            transactionsDropDown.click()
+            if type_of_unit != "apartment":
+                """apartment option is selected by default"""
 
-            optionZero = driver.find_element(
-                By.ID, self.serviceConfig["transactionTypeOprionZeroId"]
-            )
-            optionZero.click()
+                type_of_unit_dropdown_selector = self.serviceConfig["type_of_unit"][
+                    "dropdown"
+                ]
+                dropdown_input_element = driver.find_element(
+                    By.CSS_SELECTOR, type_of_unit_dropdown_selector
+                )
+                dropdown_input_element.click()
+                unit_type_option_selector = self.serviceConfig["type_of_unit"][
+                    f"{type_of_unit}"
+                ]
+                rooms_option_element = driver.find_element(
+                    By.ID, unit_type_option_selector
+                )
+                rooms_option_element.click()
+
+            if type_of_deal == "rent":
+                """sell option is selected by default"""
+
+                types_of_deal_selectors = self.serviceConfig["type_of_deal"]
+                transactionsDropDown = driver.find_element(
+                    By.CSS_SELECTOR,
+                    types_of_deal_selectors["rent"],
+                )
+                transactionsDropDown.click()
+
+                optionZero = driver.find_element(
+                    By.ID, self.serviceConfig["transactionTypeOprionZeroId"]
+                )
+                optionZero.click()
 
             locationBtn = driver.find_element(
                 By.ID, self.serviceConfig["locationBtnId"]
