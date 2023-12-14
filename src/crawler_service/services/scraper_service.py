@@ -9,11 +9,11 @@ from fake_headers import Headers
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 
-AbstractDBService = TypeVar("AbstractDBService", bound=AbstractDBService)
+AbstractDBServiceT = TypeVar("AbstractDBServiceT", bound=AbstractDBService)
 
 
 class ScraperService:
-    def __init__(self, db_service: AbstractDBService):
+    def __init__(self, db_service: AbstractDBServiceT):
         if not isinstance(db_service, AbstractDBService):
             raise TypeError(
                 f"db_service must be an instance of AbstractDBService, "
