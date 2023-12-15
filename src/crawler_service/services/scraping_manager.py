@@ -70,20 +70,20 @@ class ScrapingManager:
 
     def _process_apartments(self, city_id, city_name):
         print(f"_process_apartments::running::{city_id}-{city_name}")
-        self._process_unit(city_id, city_name, "apartment", "sell")
-        self._process_unit(city_id, city_name, "apartment", "rent")
+        self._scrape_for_unit(city_id, city_name, "apartment", "sell")
+        self._scrape_for_unit(city_id, city_name, "apartment", "rent")
 
     def _process_houses(self, city_id, city_name):
         print(f"_process_houses::running::{city_id}-{city_name}")
-        self._process_unit(city_id, city_name, "house", "sell")
-        self._process_unit(city_id, city_name, "house", "rent")
+        self._scrape_for_unit(city_id, city_name, "house", "sell")
+        self._scrape_for_unit(city_id, city_name, "house", "rent")
 
     def _process_rooms(self, city_id, city_name):
         print(f"_process_rooms::running::{city_id}-{city_name}")
-        self._process_unit(city_id, city_name, "room", "sell")
-        self._process_unit(city_id, city_name, "room", "rent")
+        self._scrape_for_unit(city_id, city_name, "room", "sell")
+        self._scrape_for_unit_process_unit(city_id, city_name, "room", "rent")
 
-    def _process_unit(self, city_id, city_name, type_of_unit, type_of_deal):
+    def _scrape_for_unit(self, city_id, city_name, type_of_unit, type_of_deal):
         """
         Might not go well with the first attempt.
         Give 5 attempts.
