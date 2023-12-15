@@ -65,3 +65,6 @@ SOLID refactoring:
  3. add support of "for sell" deals DONE
  4. add support of "house" and "room" DONE
  5. parallel execution DONE (the simplest form)
+ 6. clean the code a bit
+ 7. add unit tests
+ 8. linter fails to catch typos in methods names. why? BUG
