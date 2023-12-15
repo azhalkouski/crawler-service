@@ -30,8 +30,6 @@ class PostgresConnection:
                                     password={self.user_pass}"
             )
             self.cursor = self.conn.cursor()
-            print("Database connection open.")
-            self.info_logger.info("Database connection open.")
 
         except psycopg2.OperationalError as oper_err:
             print("psycopg2::operational error: \n", oper_err)
@@ -57,5 +55,3 @@ class PostgresConnection:
         if self.conn is not None:
             self.cursor.close()
             self.conn.close()
-            print("\n Database connection closed.")
-            self.info_logger.info("Database connection closed.")

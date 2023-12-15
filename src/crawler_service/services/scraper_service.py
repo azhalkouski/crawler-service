@@ -31,7 +31,6 @@ class ScraperService:
         self.critical_logger = loggerFactory.critical_logger
 
     def scrape(self, city_name, type_of_unit, type_of_deal):
-        print(f"ScraperService::{city_name}-{type_of_unit}-{type_of_deal}")
         count = 0
 
         driver = self._setup_firefox_webdriver()

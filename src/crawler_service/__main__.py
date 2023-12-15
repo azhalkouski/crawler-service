@@ -18,4 +18,5 @@ if __name__ == "__main__":
 
     while True:
         scraping_manager.scrape_shallow_all()
+        print("Scraping session completed.")
         time.sleep(3600)  # 1h
