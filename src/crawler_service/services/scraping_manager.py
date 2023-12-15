@@ -91,7 +91,7 @@ class ScrapingManager:
         """
         print(f"{city_id}-{city_name}-{type_of_unit}-{type_of_deal}")
 
-        ATTEMPTS_COUNT = 5
+        ATTEMPTS_COUNT = 3
         scraped_and_saved = False
 
         for _ in range(ATTEMPTS_COUNT):
