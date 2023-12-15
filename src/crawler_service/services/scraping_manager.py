@@ -1,3 +1,4 @@
+from threading import Thread
 from typing import TypeVar
 
 from crawler_service.services.abstract_db_service import AbstractDBService
@@ -48,25 +49,37 @@ class ScrapingManager:
     def _handle_city(self, city_id, city_name):
         """
         Each city processing is spread across 3 separate Threads
+        Notes to remember: `join` method blocks the calling thread until it completes
+        its execution
         """
         print(f"{city_id}-{city_name}")
 
-        self._process_apartments(city_id, city_name)  # separate Thread
-        self._process_houses(city_id, city_name)  # separate Thread
-        self._process_rooms(city_id, city_name)  # separate Thread
+        apartments_thread = Thread(
+            target=self._process_apartments, args=[city_id, city_name]
+        )
+        houses_thread = Thread(target=self._process_houses, args=[city_id, city_name])
+        rooms_thread = Thread(target=self._process_rooms, args=[city_id, city_name])
+
+        apartments_thread.start()
+        houses_thread.start()
+        rooms_thread.start()
+
+        apartments_thread.join()
+        houses_thread.join()
+        rooms_thread.join()
 
     def _process_apartments(self, city_id, city_name):
-        # TODO: create a Thread
+        print(f"_process_apartments::running::{city_id}-{city_name}")
         self._process_unit(city_id, city_name, "apartment", "sell")
         self._process_unit(city_id, city_name, "apartment", "rent")
 
     def _process_houses(self, city_id, city_name):
-        # TODO: create a Thread
+        print(f"_process_houses::running::{city_id}-{city_name}")
         self._process_unit(city_id, city_name, "house", "sell")
         self._process_unit(city_id, city_name, "house", "rent")
 
     def _process_rooms(self, city_id, city_name):
-        # TODO: create a Thread
+        print(f"_process_rooms::running::{city_id}-{city_name}")
         self._process_unit(city_id, city_name, "room", "sell")
         self._process_unit(city_id, city_name, "room", "rent")
 
