@@ -77,7 +77,6 @@ class ScrapingManager:
         self._scrape_for_unit(city_id, city_name, "house", "rent")
 
     def _process_rooms(self, city_id, city_name):
-        self._scrape_for_unit(city_id, city_name, "room", "sell")
         self._scrape_for_unit(city_id, city_name, "room", "rent")
 
     def _scrape_for_unit(self, city_id, city_name, type_of_unit, type_of_deal):
