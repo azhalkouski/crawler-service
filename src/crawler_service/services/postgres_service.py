@@ -7,7 +7,7 @@ class PostgresService(AbstractDBService):
     def __init__(self):
         serviceConfig = open_service_config()
         self.db_name = serviceConfig["db_name"]
-        self.user_name = serviceConfig["service_user"]
+        self.user_name = serviceConfig["username"]
         self.user_pass = serviceConfig["password"]
 
     def load_all_cities(self):
@@ -36,11 +36,10 @@ class PostgresService(AbstractDBService):
                 return None
 
             cur.execute(
-                f"""
-                INSERT INTO total_counts_per_city
-                (city_id, unit_type, transaction_type, total_count)
-                VALUES ({city_id}, '{unit_type}', '{transaction_type}', {count});
-                """
+                f"""INSERT INTO total_counts_per_city\
+                  (city_id, unit_type, transaction_type, total_count) VALUES\
+                    ({city_id}, '{unit_type}', '{transaction_type}',\
+                      {count});"""
             )
 
             conn.commit()

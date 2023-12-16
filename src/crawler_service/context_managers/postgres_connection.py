@@ -2,7 +2,7 @@ import psycopg2
 from crawler_service.services.logger_factory import LoggerFactory
 
 
-# rename to PostgresConnection
+# rename to PostgresConnector?
 class PostgresConnection:
     """Context manager for managing connection to the database"""
 
