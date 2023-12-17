@@ -1,5 +1,6 @@
 from crawler_service.context_managers.postgres_connection import PostgresConnection
 from crawler_service.services.abstract_db_service import AbstractDBService
+from crawler_service.services.logger_factory import LoggerFactory
 from crawler_service.utils.index import open_service_config
 
 
@@ -9,6 +10,10 @@ class PostgresService(AbstractDBService):
         self.db_name = serviceConfig["db_name"]
         self.user_name = serviceConfig["username"]
         self.user_pass = serviceConfig["password"]
+
+        loggerFactory = LoggerFactory(__name__)
+
+        self.error_logger = loggerFactory.error_logger
 
     def load_all_cities(self):
         cities = []
@@ -35,11 +40,14 @@ class PostgresService(AbstractDBService):
             if cur is None:
                 return None
 
-            cur.execute(
-                f"""INSERT INTO total_counts_per_city\
-                  (city_id, unit_type, transaction_type, total_count) VALUES\
-                    ({city_id}, '{unit_type}', '{transaction_type}',\
-                      {count});"""
-            )
-
-            conn.commit()
+            try:
+                cur.execute(
+                    f"""INSERT INTO total_counts_per_city\
+                      (city_id, unit_type, transaction_type, total_count) VALUES\
+                        ({city_id}, '{unit_type}', '{transaction_type}',\
+                          {count});"""
+                )
+                conn.commit()
+            except Exception as e:
+                print("Error occured while saving units count: \n", e)
+                self.error_logger.error(f"Error occured while saving units count: {e}")
