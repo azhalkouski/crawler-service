@@ -82,13 +82,12 @@ class ScrapingManager:
     def _scrape_for_unit(self, city_id, city_name, type_of_unit, type_of_deal):
         """
         Might not go well with the first attempt.
-        Give 5 attempts.
-        Log critical if all attempts failed
+        Give 3 attempts.
+        Log critical if an attempt fails.
         """
         print(f"{city_id}-{city_name}-{type_of_unit}-{type_of_deal}-running")
 
         ATTEMPTS_COUNT = 3
-        scraped_and_saved = False
 
         for _ in range(ATTEMPTS_COUNT):
             try:
@@ -96,28 +95,22 @@ class ScrapingManager:
                     city_name, type_of_unit, type_of_deal
                 )
             except Exception as e:
-                error_log = f"Failed to scrape for {city_name} with an error: {e}"
-                print(error_log)
-                self.error_logger.error(error_log)
+                # how do I test that a screenshot is created?
+                critical_log = (
+                    f"Scraping has failed city={city_name}, "
+                    f"type_of_unit={type_of_unit}, "
+                    f"type_of_deal={type_of_deal}"
+                    "check the screenshots for more details"
+                    f"Error: {str(e)}"
+                )
+                print(critical_log)
+                self.critical_logger.critical(critical_log)
             else:
                 print(
                     f"{city_id}-{city_name}-{type_of_unit}-"
                     f"{type_of_deal}-{count_of_units}"
                 )
-                # save obtained data to DB
                 self.db_service.save_units_count(
                     city_id, type_of_unit, type_of_deal, count_of_units
                 )
-                scraped_and_saved = True
                 break
-
-        if not scraped_and_saved:
-            critical_log = (
-                f"Scraping is constantly "
-                f"failing for city={city_name}, "
-                f"type_of_unit={type_of_unit}, "
-                f"type_of_deal={type_of_deal}"
-                "check the screenshots for more details"
-            )
-            print(critical_log)
-            self.critical_logger.critical(critical_log)
