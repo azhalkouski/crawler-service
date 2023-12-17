@@ -85,9 +85,9 @@ def test_save_units_count(mock_open_service_config, mock_postgres_connection):
     mock_cursor = mock_postgres_connection.return_value.__enter__.return_value[1]
     mock_cursor.execute.assert_called_once_with(
         f"""INSERT INTO total_counts_per_city\
-                  (city_id, unit_type, transaction_type, total_count) VALUES\
-                    ({city_id_arg}, '{unit_type_arg}', '{transaction_type_arg}',\
-                      {count_arg});"""
+                      (city_id, unit_type, transaction_type, total_count) VALUES\
+                        ({city_id_arg}, '{unit_type_arg}', '{transaction_type_arg}',\
+                          {count_arg});"""
     )
 
     # Assert that the commit method was called

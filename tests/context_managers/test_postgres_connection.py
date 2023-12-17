@@ -1,5 +1,6 @@
 from unittest.mock import MagicMock
 
+import psycopg2
 import pytest
 from crawler_service.context_managers.postgres_connection import PostgresConnection
 
@@ -61,3 +62,50 @@ def test_postgres_connection__enter__returns_connection_and_cursor(
     with PostgresConnection(db_name, user_name, user_pass) as (conn, cur):
         assert conn == connection_mock
         assert cur == cursor_mock
+
+
+def test_postgres_connection_handles_operational_error(mock_psycopg2_connect):
+    """Test that PostgresConnection handles psycopg2 OperationalError"""
+
+    _, _, magic_mock_connect = mock_psycopg2_connect
+    operational_error = "Operational error"
+    magic_mock_connect.side_effect = psycopg2.OperationalError(operational_error)
+
+    postgres_connection = PostgresConnection(db_name, user_name, user_pass)
+    error_logger_mock = MagicMock()
+    postgres_connection.error_logger.error = error_logger_mock
+
+    postgres_connection.__enter__()
+
+    error_logger_mock.assert_called_once_with(
+        f"psycopg2::operational error: {operational_error}"
+    )
+
+
+def test_postgres_connection_handles_programming_error(mock_psycopg2_connect):
+    """Test that PostgresConnection handles psycopg2 ProgrammingError"""
+
+    _, _, magic_mock_connect = mock_psycopg2_connect
+    operational_error = "Programming error"
+    magic_mock_connect.side_effect = psycopg2.ProgrammingError(operational_error)
+
+    postgres_connection = PostgresConnection(db_name, user_name, user_pass)
+    postgres_connection.__enter__()
+
+
+def test_postgres_connection_handles_generic_exception(mock_psycopg2_connect):
+    """Test that PostgresConnection handles generic exceptions"""
+
+    _, _, magic_mock_connect = mock_psycopg2_connect
+    exception_message = "Something happened at db interaction level"
+    magic_mock_connect.side_effect = Exception(exception_message)
+
+    postgres_connection = PostgresConnection(db_name, user_name, user_pass)
+    critical_logger_mock = MagicMock()
+    postgres_connection.critical_logger.critical = critical_logger_mock
+
+    postgres_connection.__enter__()
+
+    critical_logger_mock.assert_called_once_with(
+        f"Something happened at db interaction level: {exception_message}"
+    )
