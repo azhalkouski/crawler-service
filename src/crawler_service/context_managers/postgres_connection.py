@@ -25,9 +25,7 @@ class PostgresConnection:
 
         try:
             self.conn = psycopg2.connect(
-                f"dbname={self.db_name} \
-                                    user={self.user_name} \
-                                    password={self.user_pass}"
+                f"dbname={self.db_name} user={self.user_name} password={self.user_pass}"
             )
             self.cursor = self.conn.cursor()
 
