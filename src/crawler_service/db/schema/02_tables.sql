@@ -13,6 +13,29 @@ CREATE TABLE total_counts_per_city (
   transaction_type transaction_types NOT NULL
 );
 
+CREATE TABLE units_per_city (
+  id SERIAL PRIMARY KEY,
+  city_id INTEGER REFERENCES cities(id),
+  unit_type unit_types NOT NULL,
+  transaction_type transaction_types NOT NULL,
+  address varchar(255) NOT NULL,
+  square_meters INTEGER NOT NULL,
+  floor INTEGER,
+  rooms INTEGER,
+  url varchar(255) NOT NULL,
+  offer_heading varchar(255) NOT NULL,
+  is_private_offer BOOLEAN NOT NULL,
+  currency currency_types NOT NULL,
+  is_stale BOOLEAN DEFAULT FALSE,
+  bait_price INTEGER NOT NULL,
+  additional_price INTEGER,
+  security_deposit INTEGER,
+  supposed_final_price INTEGER,
+  source_created_at TIMESTAMP,
+  source_updated_at TIMESTAMP
+  scraped_and_created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+)
+
 
 GRANT SELECT ON cities TO my_user;
 
