@@ -8,6 +8,12 @@ db_name = "test_db"
 user_name = "test_user"
 user_pass = "test_pass"
 
+exceprion_e = {
+    "exc_type": Exception,
+    "exc_value": "Test exception",
+    "traceback": MagicMock(),
+}
+
 
 @pytest.fixture
 def mock_psycopg2_connect(monkeypatch):
@@ -109,3 +115,53 @@ def test_postgres_connection_handles_generic_exception(mock_psycopg2_connect):
     critical_logger_mock.assert_called_once_with(
         f"Something happened at db interaction level: {exception_message}"
     )
+
+
+def test_postgres_connection__exit__closes_connection_when_no_exception():
+    """Test that __exit__ method closes the connection when there is no exception"""
+
+    postgres_connection = PostgresConnection(db_name, user_name, user_pass)
+    cursor_mock = MagicMock()
+    conn_mock = MagicMock()
+    postgres_connection.cursor = cursor_mock
+    postgres_connection.conn = conn_mock
+
+    postgres_connection.__exit__(None, None, None)
+
+    cursor_mock.close.assert_called_once()
+    conn_mock.close.assert_called_once()
+
+
+def test_postgres_connection_exit_closes_connection_when_exception_occurs():
+    """Test that __exit__ method closes the connection when there is an exception"""
+
+    postgres_connection = PostgresConnection(db_name, user_name, user_pass)
+    cursor_mock = MagicMock()
+    conn_mock = MagicMock()
+    postgres_connection.cursor = cursor_mock
+    postgres_connection.conn = conn_mock
+
+    postgres_connection.__exit__(
+        exceprion_e["exc_type"], exceprion_e["exc_value"], exceprion_e["traceback"]
+    )
+
+    cursor_mock.close.assert_called_once()
+    conn_mock.close.assert_called_once()
+
+
+def test_postgres_connection_exit_logs_exception_when_exception_occurs():
+    """Test that __exit__ method logs the exception when there is an exception"""
+
+    postgres_connection = PostgresConnection(db_name, user_name, user_pass)
+    cursor_mock = MagicMock()
+    conn_mock = MagicMock()
+    postgres_connection.cursor = cursor_mock
+    postgres_connection.conn = conn_mock
+    error_logger_mock = MagicMock()
+    postgres_connection.error_logger.error = error_logger_mock
+
+    exc_type, exc_value, traceback = exceprion_e.values()
+
+    postgres_connection.__exit__(exc_type, exc_value, traceback)
+
+    error_logger_mock.assert_called_once_with(f"{exc_type} | {exc_value} | {traceback}")
