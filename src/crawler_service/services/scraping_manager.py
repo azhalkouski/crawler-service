@@ -48,7 +48,7 @@ class ScrapingManager:
 
     def _handle_city(self, city_id, city_name):
         """
-        Each city processing is spread across 3 separate Threads
+        Processing for each city is spread across three separate threads.
         Notes to remember: `join` method blocks the calling thread until it completes
         its execution
         """
@@ -95,7 +95,6 @@ class ScrapingManager:
                     city_name, type_of_unit, type_of_deal
                 )
             except Exception as e:
-                # how do I test that a screenshot is created?
                 critical_log = (
                     f"Scraping has failed city={city_name}, "
                     f"type_of_unit={type_of_unit}, "
