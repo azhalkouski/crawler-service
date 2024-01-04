@@ -62,9 +62,10 @@ class ScraperService:
 
         firefoxOptions = webdriver.FirefoxOptions()
         firefoxOptions.add_argument("-headless")
-        service = webdriver.FirefoxService(
-            executable_path=self.serviceConfig["geckodriver_path"]
-        )
+        # commented but not removed, presumably useless
+        # service = webdriver.FirefoxService(
+        #     executable_path=self.serviceConfig["geckodriver_path"]
+        # )
 
         for key, value in headers.items():
             firefoxOptions.add_argument(f"--header={key}: {value}")
@@ -75,7 +76,9 @@ class ScraperService:
             firefoxOptions.add_argument("--header=Accept-Language: en-US,en;q=0.5")
             firefoxOptions.add_argument("--header=Host: www.otodom.pl")
 
-        driver = webdriver.Firefox(options=firefoxOptions, service=service)
+        # commented but not removed, presumably useless
+        # driver = webdriver.Firefox(options=firefoxOptions, service=service)
+        driver = webdriver.Firefox(options=firefoxOptions)
 
         return driver
 
